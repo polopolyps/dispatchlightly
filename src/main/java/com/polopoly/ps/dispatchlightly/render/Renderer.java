@@ -6,6 +6,9 @@ import java.io.Writer;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.tools.view.context.ChainedContext;
+import org.apache.velocity.tools.view.context.ViewContext;
 
 import com.polopoly.ps.dispatchlightly.ChainedModelContext;
 import com.polopoly.ps.dispatchlightly.Model;
@@ -52,8 +55,23 @@ public class Renderer {
 
 		VelocityContext velocityContext;
 
+		// The #render directive of Polopoly expects the context to be a
+		// ChainedContext so do our best to retrieve one from the parent
+		// context.
+
+		if (parentVelocityContext instanceof InternalContextAdapter) {
+			parentVelocityContext = ((InternalContextAdapter) parentVelocityContext).getInternalUserContext();
+		}
+
 		if (parentVelocityContext != null) {
-			velocityContext = new VelocityContext(parentVelocityContext);
+			if (parentVelocityContext instanceof ViewContext) {
+				ViewContext viewContext = (ViewContext) parentVelocityContext;
+
+				velocityContext = new ChainedContext(parentVelocityContext, viewContext.getVelocityEngine(),
+						viewContext.getRequest(), viewContext.getResponse(), viewContext.getServletContext());
+			} else {
+				velocityContext = new VelocityContext(parentVelocityContext);
+			}
 		} else {
 			velocityContext = new VelocityContext();
 		}

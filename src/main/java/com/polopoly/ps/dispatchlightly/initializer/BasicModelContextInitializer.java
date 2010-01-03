@@ -32,6 +32,7 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 		context.put(util.getPolicyCMServer());
 		context.put(new RenderMode(util.getControllerContext().getMode()));
 		context.put(util.getPolicy());
+		context.put(util.getModel().getRequest());
 
 		try {
 			context.put(util.getPage(Page.class));

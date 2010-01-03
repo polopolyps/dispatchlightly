@@ -1,5 +1,8 @@
 package com.polopoly.ps.dispatchlightly.render;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.polopoly.cm.policy.Policy;
 import com.polopoly.ps.dispatchlightly.Model;
 import com.polopoly.ps.dispatchlightly.ModelContext;
@@ -10,6 +13,8 @@ import com.polopoly.util.Require;
 import com.polopoly.util.policy.Util;
 
 public class DefaultRenderRequest implements RenderRequest {
+	private static final Logger LOGGER = Logger.getLogger(DefaultRenderRequest.class.getName());
+
 	private ModelContext context;
 	private Class<? extends Model> modelClass;
 	private RenderMode mode;
@@ -24,6 +29,12 @@ public class DefaultRenderRequest implements RenderRequest {
 		// optional
 		this.context = context;
 		this.addToChildModel = addToChildModel;
+
+		for (Object o : addToChildModel) {
+			if (o == null) {
+				LOGGER.log(Level.WARNING, "Attempt to add a null object to the context.", new Exception());
+			}
+		}
 	}
 
 	public DefaultRenderRequest(Class<? extends Model> modelClass, ModelContext context, Object... addToChildModel) {

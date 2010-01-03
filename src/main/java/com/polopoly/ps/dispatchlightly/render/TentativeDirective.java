@@ -48,10 +48,8 @@ public class TentativeDirective extends Directive {
 	public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException,
 			ResourceNotFoundException, ParseErrorException, MethodInvocationException {
 		if (node.jjtGetNumChildren() < 2) {
-			throw new ParseErrorException("The " + getName()
-					+ " directive accepts a single parameter which is a "
-					+ RenderRequest.class.getSimpleName() + ". Got " + node.jjtGetNumChildren()
-					+ " parameters.");
+			throw new ParseErrorException("The " + getName() + " directive accepts a single parameter which is a "
+					+ RenderRequest.class.getSimpleName() + ". Got " + node.jjtGetNumChildren() + " parameters.");
 		}
 
 		try {
@@ -63,7 +61,7 @@ public class TentativeDirective extends Directive {
 				if (child instanceof ASTBlock) {
 					parseBodyBlock(context, child, content);
 				} else if (child != null) {
-					parseParameter(context, child);
+					parseParameter(context, child, i);
 				}
 			}
 
@@ -75,8 +73,8 @@ public class TentativeDirective extends Directive {
 		return true;
 	}
 
-	protected void parseBodyBlock(InternalContextAdapter context, Node child, StringWriter content)
-			throws IOException, DontRenderBodyException {
+	protected void parseBodyBlock(InternalContextAdapter context, Node child, StringWriter content) throws IOException,
+			DontRenderBodyException {
 		try {
 			child.render(context, content);
 		} catch (RuntimeException e) {
@@ -111,27 +109,24 @@ public class TentativeDirective extends Directive {
 		} while (at != null && at != last);
 
 		LOGGER.log(Level.INFO, "The exception " + e
-				+ " thrown inside a tentative block did not match the specified exception class "
-				+ exceptionClassName
+				+ " thrown inside a tentative block did not match the specified exception class " + exceptionClassName
 				+ " (checked if any of the following contained the exception class name: " + examined
 				+ "). Re-throwing it.");
 
 		return false;
 	}
 
-	protected void parseParameter(InternalContextAdapter context, Node child) {
-		if (!exceptionClassName.equals("")) {
+	protected void parseParameter(InternalContextAdapter context, Node child, int i) {
+		if (i > 1) {
 			throw new ParseErrorException("The " + getName()
-					+ " directive accepts a single optional parameter. Remove the second parameter "
-					+ child.literal() + ".");
+					+ " directive accepts a single optional parameter. Remove the second parameter " + child.literal()
+					+ ".");
 		}
 
-		// it is a parameter.
 		try {
 			exceptionClassName = CheckedCast.cast(child.value(context), String.class, child.literal());
 		} catch (CheckedClassCastException e) {
-			throw new ParseErrorException("The " + getName()
-					+ " directive accepts a single optional parameter which "
+			throw new ParseErrorException("The " + getName() + " directive accepts a single optional parameter which "
 					+ "is a String specifying the exception class name: " + e.getMessage());
 		}
 	}
