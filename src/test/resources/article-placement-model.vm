@@ -1,0 +1,28 @@
+#set($article = $lm.articlePlacement.article)
+<li class='$lm.cssClass'><a href="$lm.articleModel.url" class="entry-title" rel="bookmark">
+
+#tentative ("NoImageException")
+	<div class=" button"><img
+		src="$lm.imageModel.url"
+		width="208" height="156" alt="" />
+
+		#renderlist($lm.buttonRequests) 
+	</div>
+#end
+
+	<strong>$article.overline</strong><span
+		class="offscreen">&nbsp;&mdash;</span> $article.title
+
+	</a>
+
+	<p class="$lm.pCssClass">#if($article.opinion)<span class="icon">Meinung</span>#end
+	 $article.intro
+	 <cite> $article.authorPrefix <span class="author fn">$article.author</span> </cite></p>
+
+	<ul class="oneline">
+
+#renderlist($lm.articleModel.onelinerRequests) 
+
+	</ul>
+</li>
+  

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template-definition version="1.0" xmlns="http://www.polopoly.com/polopoly/cm/app/xml">
+  <input-template name="AdaptingControllerPageIntegrationTest">
+    <output-templates mode="www">
+      <id>AdaptingControllerPageIntegrationTest.ot</id>
+    </output-templates>
+  </input-template>
+  <output-template name="AdaptingControllerPageIntegrationTest.ot" input-template="p.siteengine.ArticleOutputTemplate">
+    <content-xml>
+      <component group="output/modelKeyMode" name="selected">no-cache</component>
+      <contentref group="output/renderer" name="selected">
+        <contentid>
+          <externalid>p.siteengine.VelocityFileRenderer</externalid>
+        </contentid>
+      </contentref>
+      <component group="output/renderer/selected/defaultVelocityViewFileName" name="value">/WEB-INF/velocity/adapting-controller-page-integration-test-model.vm</component>
+      <contentref group="output/controller" name="selected">
+        <contentid>
+          <externalid>p.siteengine.JavaClassRenderController</externalid>
+        </contentid>
+      </contentref> 
+      <component group="output/controller/selected/renderControllerClass" name="value">com.polopoly.ps.dispatchlightly.polopoly.AdaptingController</component>
+
+      <component group="dispatchlightly/modelClass" name="value">com.polopoly.ps.dispatchlightly.render.AdaptingControllerPageIntegrationTestModel</component>
+    </content-xml>
+  </output-template>
+</template-definition>
+

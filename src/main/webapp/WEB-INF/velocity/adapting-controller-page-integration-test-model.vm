@@ -1,0 +1,3 @@
+$lm.contentIdString
+#renderlightly($lm.renderRequest)
+#render({"contentId":$lm.conventionalPolicy.contentId, "params":{"" : ""}, "":""})

@@ -1,0 +1,5 @@
+#set ($foreachIterations = 10)
+
+#foreach ($i in $lm.iterable) 
+	$i
+#end

@@ -1,0 +1,3 @@
+		<button
+			data-href="$lm.url"
+			class="$lm.cssClass">$lm.linkLabel</button>

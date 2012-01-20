@@ -1,0 +1,9 @@
+		    <li class='$lm.cssClass'>
+		        <a href="$lm.url">
+		    		#if ($lm.article.opinion) 
+						<span class="icon">Meinung</span>		    		
+		    		#end
+	    	        <strong>$lm.article.overline</strong><span class="division">&ndash;</span>
+			        $lm.article.title
+		        </a>
+		    </li>

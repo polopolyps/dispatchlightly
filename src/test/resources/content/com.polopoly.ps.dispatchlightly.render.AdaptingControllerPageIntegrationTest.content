@@ -1,0 +1,6 @@
+id:.renderedObject
+inputtemplate:AdaptingControllerPageIntegrationTest
+securityparent:.conventionalPolicy
+
+id:.conventionalPolicy
+inputtemplate:ConventionalPolicy
