@@ -23,5 +23,8 @@ public interface LightURLBuilder {
 	 */
 	String createUrl(ContentId[] path, Map<String, String> parametersMap);
 
+	/**
+	 * Prepends the current context path to the URL.
+	 */
 	String getStaticAsset(String assetUriRelativeToRoot);
 }
