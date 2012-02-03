@@ -16,7 +16,8 @@ public class ModelFactory {
 	private Class<? extends Model> modelClass;
 	private ModelContext modelContext;
 
-	public ModelFactory(Class<? extends Model> modelClass, ModelContext modelContext) {
+	public ModelFactory(Class<? extends Model> modelClass,
+			ModelContext modelContext) {
 		this.modelClass = Require.require(modelClass);
 		this.modelContext = Require.require(modelContext);
 	}
@@ -25,22 +26,22 @@ public class ModelFactory {
 		Constructor<?>[] constructors = modelClass.getConstructors();
 
 		if (constructors.length == 0) {
-			throw new ModelFactoryException("The model class " + modelClass.getName()
-					+ " had no public constructors.");
+			throw new ModelFactoryException("The model class "
+					+ modelClass.getName() + " had no public constructors.");
 		}
 
 		Arrays.sort(constructors, new Comparator<Constructor<?>>() {
 			@Override
 			public int compare(Constructor<?> o1, Constructor<?> o2) {
-				return new Integer(o1.getParameterTypes().length).compareTo(new Integer(o2
-						.getParameterTypes().length));
+				return new Integer(o1.getParameterTypes().length)
+						.compareTo(new Integer(o2.getParameterTypes().length));
 			}
 		});
 
 		NoSuchModelContextObjectException lastException = null;
 
 		for (int i = constructors.length - 1; i >= 0; i--) {
-			Constructor<?> longestConstructor = constructors[constructors.length - 1];
+			Constructor<?> longestConstructor = constructors[i];
 
 			try {
 				return (Model) construct(longestConstructor);
@@ -55,12 +56,14 @@ public class ModelFactory {
 				"The model context did not contain objects of all required types to construct a model of type "
 						+ modelClass.getName()
 						+ ". An example of a missing object for one of the constructors is "
-						+ lastException.getMissingClass().getName() + " (for the constructor "
-						+ constructors[0] + "). The context was: " + modelContext + ".");
+						+ lastException.getMissingClass().getName()
+						+ " (for the constructor "
+						+ constructors[0]
+						+ "). The context was: " + modelContext + ".");
 	}
 
-	private Object construct(Constructor<?> constructor) throws ModelFactoryException,
-			NoSuchModelContextObjectException {
+	private Object construct(Constructor<?> constructor)
+			throws ModelFactoryException, NoSuchModelContextObjectException {
 		Class<?>[] parameterTypes = constructor.getParameterTypes();
 
 		Object[] arguments = new Object[parameterTypes.length];
@@ -78,13 +81,16 @@ public class ModelFactory {
 		try {
 			return constructor.newInstance(arguments);
 		} catch (Exception e) {
-			throw new FatalDispatchingException("While trying to instantiate model class " + modelClass
-					+ " using constructor " + constructor + " with arguments " + Arrays.toString(arguments)
-					+ ": " + e.getMessage(), e);
+			throw new FatalDispatchingException(
+					"While trying to instantiate model class " + modelClass
+							+ " using constructor " + constructor
+							+ " with arguments " + Arrays.toString(arguments)
+							+ ": " + e.getMessage(), e);
 		}
 	}
 
-	private boolean isParameterOptional(Constructor<?> constructor, int parameterIndex) {
+	private boolean isParameterOptional(Constructor<?> constructor,
+			int parameterIndex) {
 		Annotation[] annotations = constructor.getParameterAnnotations()[parameterIndex];
 
 		for (Annotation annotation : annotations) {
