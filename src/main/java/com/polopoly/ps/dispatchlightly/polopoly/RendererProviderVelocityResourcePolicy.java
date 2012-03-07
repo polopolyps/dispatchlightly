@@ -9,7 +9,7 @@ import com.polopoly.siteengine.mvc.view.renderer.RendererProviderVelocityFilePol
 
 public class RendererProviderVelocityResourcePolicy extends RendererProviderVelocityFilePolicy {
 	public InputStream getVelocityTemplate(ServletContext context) throws CMException {
-		String fileName = getFileName(this);
+		String fileName = RendererProviderVelocityFilePolicy.getFileName(this);
 
 		InputStream result = getClass().getResourceAsStream(fileName);
 
