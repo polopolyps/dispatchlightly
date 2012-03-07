@@ -13,6 +13,7 @@ import com.polopoly.ps.dispatchlightly.polopoly.RenderMode;
 import com.polopoly.ps.layout.element.util.ControllerUtil;
 import com.polopoly.ps.layout.element.util.NoCurrentPageException;
 import com.polopoly.ps.layout.element.util.NoPageScopeAvailableException;
+import com.polopoly.siteengine.model.context.PageScope;
 import com.polopoly.siteengine.model.request.PreviewScope;
 import com.polopoly.siteengine.resource.Resources;
 import com.polopoly.siteengine.structure.Page;
@@ -46,7 +47,12 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 
 		context.put(util.getRequest());
 		context.put(util);
-		context.put(util.getModel().getContext().getPage());
+
+		PageScope page = util.getModel().getContext().getPage();
+
+		if (page != null) {
+			context.put(page);
+		}
 
 		try {
 			context.put(util.getContentPath());
@@ -54,8 +60,7 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 			// ignore.
 		}
 
-		context.put(calculatePreviewModel(util.getModel().getRequest()
-				.getPreview()));
+		context.put(calculatePreviewModel(util.getModel().getRequest().getPreview()));
 
 		try {
 			Resources resources = util.getSite(Site.class).getResources();
@@ -68,8 +73,7 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 		URLBuilder urlBuilder = getURLBuilder(util.getRequest());
 
 		if (urlBuilder != null) {
-			context.put(new LightURLBuilderWrapper(urlBuilder, util
-					.getRequest()));
+			context.put(new LightURLBuilderWrapper(urlBuilder, util.getRequest()));
 		}
 	}
 
