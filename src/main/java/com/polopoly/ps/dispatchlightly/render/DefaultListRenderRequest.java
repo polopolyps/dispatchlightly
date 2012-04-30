@@ -14,6 +14,7 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 	private Class<? extends Model> modelClass;
 	private RenderMode mode;
 	private ModelContext context;
+	private Object[] addToChildModel = new Object[1];
 
 	public DefaultListRenderRequest(ModelContext context, Iterable<?> objectsToRender, RenderMode mode) {
 		this(context, objectsToRender, null, mode);
@@ -23,8 +24,7 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 		this(context, objectsToRender, null, RenderMode.DEFAULT);
 	}
 
-	public DefaultListRenderRequest(ModelContext context, Iterable<?> objectsToRender,
-			Class<? extends Model> modelClass) {
+	public DefaultListRenderRequest(ModelContext context, Iterable<?> objectsToRender, Class<? extends Model> modelClass) {
 		this(context, objectsToRender, modelClass, RenderMode.DEFAULT);
 	}
 
@@ -38,14 +38,27 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 		this.mode = Require.require(mode);
 	}
 
+	public void setAddToChildModel(Object[] addToChildModel) {
+		this.addToChildModel = addToChildModel;
+	}
+
 	@Override
 	public Iterator<RenderRequest> iterator() {
 		return new ListPositionTransformingIterator<Object, RenderRequest>(objectsToRender.iterator()) {
 			@Override
 			protected RenderRequest transform(Object next, ListPosition position) {
-				return new DefaultRenderRequest(modelClass, mode, context, next, position);
+				return createRenderRequest(next, position);
 			}
+
 		};
 	}
 
+	protected RenderRequest createRenderRequest(Object next, ListPosition position) {
+		Object[] add = new Object[addToChildModel.length + 2];
+		add[0] = next;
+		add[1] = position;
+		System.arraycopy(addToChildModel, 0, add, 2, addToChildModel.length);
+
+		return new DefaultRenderRequest(modelClass, mode, context, add);
+	}
 }
