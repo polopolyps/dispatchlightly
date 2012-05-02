@@ -31,14 +31,15 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 	@SuppressWarnings("unchecked")
 	public DefaultListRenderRequest(ModelContext context, Iterable<?> objectsToRender,
 			Class<? extends Model> modelClass, RenderMode mode) {
-		this.context = Require.require(context);
+		// optional
+		this.context = context;
 		this.objectsToRender = (Iterable<Object>) Require.require(objectsToRender);
 		// optional.
 		this.modelClass = modelClass;
 		this.mode = Require.require(mode);
 	}
 
-	public void setAddToChildModel(Object[] addToChildModel) {
+	public void setAddToChildModel(Object... addToChildModel) {
 		this.addToChildModel = addToChildModel;
 	}
 

@@ -76,9 +76,9 @@ public class Renderer {
 		}
 	}
 
-	private Model createModel(ModelContext parentContext) throws RenderException {
+	private Model createModel(ModelContext modelContext) throws RenderException {
 		try {
-			return new ModelFactory(request.getModelClass(), parentContext).create();
+			return new ModelFactory(request.getModelClass(), modelContext).create();
 		} catch (ModelFactoryException e) {
 			throw new RenderException(e.getMessage());
 		} catch (NoModelClassAvailableException e) {

@@ -10,8 +10,13 @@ public class ChainedModelContext implements ModelContext {
 		this.parentContext = parentContext;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T get(Class<T> klass) throws NoSuchModelContextObjectException {
+		if (klass.isAssignableFrom(getClass())) {
+			return (T) this;
+		}
+
 		try {
 			return localContext.get(klass);
 		} catch (NoSuchModelContextObjectException e) {

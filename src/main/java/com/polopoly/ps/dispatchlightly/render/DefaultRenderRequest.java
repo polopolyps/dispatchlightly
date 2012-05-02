@@ -15,8 +15,8 @@ public class DefaultRenderRequest implements RenderRequest {
 	private RenderMode mode;
 	private Object[] addToChildModel;
 
-	public DefaultRenderRequest(Class<? extends Model> modelClass,
-			RenderMode mode, ModelContext context, Object... addToChildModel) {
+	public DefaultRenderRequest(Class<? extends Model> modelClass, RenderMode mode, ModelContext context,
+			Object... addToChildModel) {
 		// optional. will be derived from annotation if not present
 		this.modelClass = modelClass;
 		this.mode = Require.require(mode);
@@ -26,13 +26,11 @@ public class DefaultRenderRequest implements RenderRequest {
 		this.addToChildModel = addToChildModel;
 	}
 
-	public DefaultRenderRequest(Class<? extends Model> modelClass,
-			ModelContext context, Object... addToChildModel) {
+	public DefaultRenderRequest(Class<? extends Model> modelClass, ModelContext context, Object... addToChildModel) {
 		this(modelClass, RenderMode.DEFAULT, context, addToChildModel);
 	}
 
-	public DefaultRenderRequest(Class<? extends Model> modelClass,
-			RenderMode mode) {
+	public DefaultRenderRequest(Class<? extends Model> modelClass, RenderMode mode) {
 		this(modelClass, mode, null);
 	}
 
@@ -40,39 +38,30 @@ public class DefaultRenderRequest implements RenderRequest {
 		this(modelClass, RenderMode.DEFAULT, null);
 	}
 
-	public DefaultRenderRequest(RenderMode mode, ModelContext context,
-			Object primaryObject, Object... addToChildModel) {
-		this(null, RenderMode.DEFAULT, context, append(primaryObject,
-				addToChildModel));
+	public DefaultRenderRequest(RenderMode mode, ModelContext context, Object primaryObject, Object... addToChildModel) {
+		this(null, RenderMode.DEFAULT, context, append(primaryObject, addToChildModel));
 	}
 
-	public DefaultRenderRequest(ModelContext context, Object primaryObject,
-			Object... addToChildModel) {
-		this(null, RenderMode.DEFAULT, context, append(primaryObject,
-				addToChildModel));
+	public DefaultRenderRequest(ModelContext context, Object primaryObject, Object... addToChildModel) {
+		this(null, RenderMode.DEFAULT, context, append(primaryObject, addToChildModel));
 	}
 
-	public DefaultRenderRequest(RenderMode mode, Object primaryObject,
-			Object... addToChildModel) {
+	public DefaultRenderRequest(RenderMode mode, Object primaryObject, Object... addToChildModel) {
 		this(null, mode, null, append(primaryObject, addToChildModel));
 	}
 
 	public DefaultRenderRequest(Object primaryObject, Object... addToChildModel) {
-		this(null, RenderMode.DEFAULT, null, append(primaryObject,
-				addToChildModel));
+		this(null, RenderMode.DEFAULT, null, append(primaryObject, addToChildModel));
 	}
 
-	public Class<? extends Model> getModelClass()
-			throws NoModelClassAvailableException {
+	public Class<? extends Model> getModelClass() throws NoModelClassAvailableException {
 		if (modelClass == null) {
 			if (addToChildModel.length == 0) {
-				throw new NoModelClassAvailableException(
-						"Neither model class nor object to render "
-								+ "was specified for the render request.");
+				throw new NoModelClassAvailableException("Neither model class nor object to render "
+						+ "was specified for the render request.");
 			}
 
-			return new ModelClassCalculator()
-					.deriveModelFromAnnotation(addToChildModel[0]);
+			return new ModelClassCalculator().deriveModelFromAnnotation(addToChildModel[0]);
 		}
 		return modelClass;
 	}
@@ -98,8 +87,7 @@ public class DefaultRenderRequest implements RenderRequest {
 		return context;
 	}
 
-	private static Object[] append(Object primaryObject,
-			Object... addToChildModel) {
+	private static Object[] append(Object primaryObject, Object... addToChildModel) {
 		Object[] result = new Object[addToChildModel.length + 1];
 		result[0] = primaryObject;
 
@@ -109,11 +97,8 @@ public class DefaultRenderRequest implements RenderRequest {
 	}
 
 	public String toString() {
-		return toString(addToChildModel)
-				+ (modelClass != null ? " using "
-						+ modelClass.getClass().getSimpleName() : "")
-				+ " in mode " + mode
-				+ (context != null ? " using context " + context : "");
+		return toString(addToChildModel) + (modelClass != null ? " using " + modelClass.getSimpleName() : "")
+				+ " in mode " + mode + (context != null ? " using context " + context : "");
 	}
 
 	private String toString(Object[] objects) {

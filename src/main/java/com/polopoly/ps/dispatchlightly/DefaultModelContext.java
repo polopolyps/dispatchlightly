@@ -18,6 +18,10 @@ public class DefaultModelContext implements ModelContext {
 	public <T> T get(Class<T> klass) throws NoSuchModelContextObjectException {
 		List<Object> candidates = new ArrayList<Object>();
 
+		if (klass.isAssignableFrom(getClass())) {
+			return (T) this;
+		}
+
 		for (Object o : contextObjects) {
 			if (klass.isAssignableFrom(o.getClass())) {
 				candidates.add(o);
@@ -35,16 +39,13 @@ public class DefaultModelContext implements ModelContext {
 			if (a.getClass().isAssignableFrom(b.getClass())) {
 				candidates.remove(0);
 				continue;
-			}
-
-			else if (b.getClass().isAssignableFrom(a.getClass())) {
+			} else if (b.getClass().isAssignableFrom(a.getClass())) {
 				candidates.remove(1);
 				continue;
 			} else {
-				LOGGER.log(Level.WARNING,
-						"There were a least two instances in the model compatble with the class " + klass
-								+ ", one of type " + a.getClass() + " and one of type " + b.getClass()
-								+ ". Randomly picking " + b.getClass() + ".");
+				LOGGER.log(Level.WARNING, "There were a least two instances in the model compatble with the class "
+						+ klass + ", one of type " + a.getClass() + " and one of type " + b.getClass()
+						+ ". Randomly picking " + b.getClass() + ".");
 				candidates.remove(0);
 			}
 		}
