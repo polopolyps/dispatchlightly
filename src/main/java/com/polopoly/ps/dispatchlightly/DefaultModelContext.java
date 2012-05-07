@@ -1,18 +1,17 @@
 package com.polopoly.ps.dispatchlightly;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.polopoly.ps.dispatchlightly.exception.NoSuchModelContextObjectException;
 
 public class DefaultModelContext implements ModelContext {
-	private static final Logger LOGGER = Logger.getLogger(DefaultModelContext.class.getName());
+	private static final Logger LOGGER = Logger
+			.getLogger(DefaultModelContext.class.getName());
 
-	private Set<Object> contextObjects = new HashSet<Object>();
+	private List<Object> contextObjects = new ArrayList<Object>();
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> klass) throws NoSuchModelContextObjectException {
@@ -32,21 +31,22 @@ public class DefaultModelContext implements ModelContext {
 			throw new NoSuchModelContextObjectException(klass);
 		}
 
-		while (candidates.size() > 1) {
-			Object a = candidates.get(0);
-			Object b = candidates.get(1);
+		for (int i = 0; i < candidates.size(); i++) {
+			for (int j = i + 1; j < candidates.size(); j++) {
 
-			if (a.getClass().isAssignableFrom(b.getClass())) {
-				candidates.remove(0);
-				continue;
-			} else if (b.getClass().isAssignableFrom(a.getClass())) {
-				candidates.remove(1);
-				continue;
-			} else {
-				LOGGER.log(Level.WARNING, "There were a least two instances in the model compatble with the class "
-						+ klass + ", one of type " + a.getClass() + " and one of type " + b.getClass()
-						+ ". Randomly picking " + b.getClass() + ".");
-				candidates.remove(0);
+				Object a = candidates.get(i);
+				Object b = candidates.get(j);
+
+				if (a.getClass().equals(b.getClass())) {
+					// tie.
+					continue;
+				}
+
+				if (a.getClass().isAssignableFrom(b.getClass())) {
+					candidates.remove(i);
+				} else if (b.getClass().isAssignableFrom(a.getClass())) {
+					candidates.remove(j);
+				}
 			}
 		}
 
@@ -56,11 +56,15 @@ public class DefaultModelContext implements ModelContext {
 	public void put(Object object) {
 		if (object == null) {
 			// creating exception to be able to trace who the culprit was.
-			LOGGER.log(Level.WARNING, "Attempt to put a null object into the model.", new Exception());
+			LOGGER.log(Level.WARNING,
+					"Attempt to put a null object into the model.",
+					new Exception());
 			return;
 		}
 
-		contextObjects.add(object);
+		// we add it first so in case of ambiguity the last added object
+		// is the one returned by get.
+		contextObjects.add(0, object);
 	}
 
 	public String toString() {

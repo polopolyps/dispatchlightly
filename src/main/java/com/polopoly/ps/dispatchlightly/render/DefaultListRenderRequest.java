@@ -14,7 +14,7 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 	private Class<? extends Model> modelClass;
 	private RenderMode mode;
 	private ModelContext context;
-	private Object[] addToChildModel = new Object[1];
+	private Object[] addToChildModel = new Object[0];
 
 	public DefaultListRenderRequest(ModelContext context, Iterable<?> objectsToRender, RenderMode mode) {
 		this(context, objectsToRender, null, mode);
