@@ -12,16 +12,18 @@ import com.polopoly.cm.servlet.URLBuilder;
 import com.polopoly.util.Require;
 
 public class LightURLBuilderWrapper implements LightURLBuilder {
-	private static final Logger LOGGER = Logger
-			.getLogger(LightURLBuilderWrapper.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(LightURLBuilderWrapper.class.getName());
 
 	protected URLBuilder urlBuilder;
 	protected HttpServletRequest request;
 
-	public LightURLBuilderWrapper(URLBuilder urlBuilder,
-			HttpServletRequest request) {
+	public LightURLBuilderWrapper(URLBuilder urlBuilder, HttpServletRequest request) {
 		this.urlBuilder = Require.require(urlBuilder);
 		this.request = Require.require(request);
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
 	}
 
 	@Override
@@ -29,10 +31,8 @@ public class LightURLBuilderWrapper implements LightURLBuilder {
 		try {
 			return urlBuilder.createFileUrl(cId, filePath, request);
 		} catch (CMException e) {
-			LOGGER.log(Level.WARNING,
-					"While creating file URL for " + cId.getContentIdString()
-							+ " and path " + filePath + ": " + e.getMessage(),
-					e);
+			LOGGER.log(Level.WARNING, "While creating file URL for " + cId.getContentIdString()
+					+ " and path " + filePath + ": " + e.getMessage(), e);
 
 			return "";
 		}
@@ -43,10 +43,11 @@ public class LightURLBuilderWrapper implements LightURLBuilder {
 		try {
 			return urlBuilder.createUrl(path, parametersMap, request);
 		} catch (CMException e) {
-			LOGGER.log(Level.WARNING, "While creating URL for "
-					+ toString(path)
-					+ (parametersMap.isEmpty() ? "" : " and parameters "
-							+ parametersMap) + ": " + e.getMessage(), e);
+			LOGGER.log(
+					Level.WARNING,
+					"While creating URL for " + toString(path)
+							+ (parametersMap.isEmpty() ? "" : " and parameters " + parametersMap) + ": "
+							+ e.getMessage(), e);
 
 			return "";
 		}
