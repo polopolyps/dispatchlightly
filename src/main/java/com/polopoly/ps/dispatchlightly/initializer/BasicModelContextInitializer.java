@@ -2,6 +2,9 @@ package com.polopoly.ps.dispatchlightly.initializer;
 
 import static com.polopoly.cm.servlet.RequestPreparator.getURLBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import com.polopoly.cm.client.CMRuntimeException;
 import com.polopoly.cm.servlet.URLBuilder;
 import com.polopoly.ps.dispatchlightly.ModelContext;
@@ -33,6 +36,12 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 		context.put(new RenderMode(util.getControllerContext().getMode()));
 		context.put(util.getPolicy());
 		context.put(util.getModel().getRequest());
+
+		try {
+			context.put(new URL(util.getRequest().getRequestURL().toString()));
+		} catch (MalformedURLException e2) {
+			// weird, but ignore.
+		}
 
 		try {
 			context.put(util.getPage(Page.class));
