@@ -2,6 +2,8 @@ package com.polopoly.ps.dispatchlightly.initializer;
 
 import static com.polopoly.cm.servlet.RequestPreparator.getURLBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +47,10 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 
 		try {
 			putUnlessExists(context, util.getPage(Page.class), Page.class);
+
+			context.put(new URL(util.getRequest().getRequestURL().toString()));
+		} catch (MalformedURLException e2) {
+			// weird, but ignore.
 		} catch (NoCurrentPageException e1) {
 			// fine.
 		}
@@ -83,8 +89,7 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 		URLBuilder urlBuilder = getURLBuilder(util.getRequest());
 
 		if (urlBuilder != null) {
-			putUnlessExists(context, new LightURLBuilderWrapper(urlBuilder, util.getRequest()),
-					LightURLBuilder.class);
+			putUnlessExists(context, new LightURLBuilderWrapper(urlBuilder, util.getRequest()), LightURLBuilder.class);
 		}
 	}
 
