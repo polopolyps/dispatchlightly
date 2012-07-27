@@ -3,7 +3,7 @@ package com.polopoly.ps.dispatchlightly.sz;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
 import com.polopoly.util.Require;
 
 public class ArticlePojo implements Article {

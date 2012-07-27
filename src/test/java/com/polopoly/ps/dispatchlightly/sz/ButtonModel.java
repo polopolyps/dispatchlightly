@@ -1,8 +1,8 @@
 package com.polopoly.ps.dispatchlightly.sz;
 
 import com.polopoly.ps.dispatchlightly.Model;
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
 import com.polopoly.ps.dispatchlightly.model.ListPosition;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
 
 public class ButtonModel implements Model {
 	private Button button;
