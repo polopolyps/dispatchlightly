@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 import com.polopoly.cm.ContentId;
 import com.polopoly.cm.client.CMException;
-import com.polopoly.cm.path.ExtendedTocBasedPathTranslator;
 import com.polopoly.cm.path.impl.RecursivePathTranslator;
+import com.polopoly.cm.path.impl.SiteEngineContentPathTranslator;
 import com.polopoly.cm.policy.Policy;
 import com.polopoly.pear.config.impl.ConfigReadMap;
 import com.polopoly.siteengine.structure.Alias;
@@ -30,7 +30,7 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 	private PolopolyContext context;
 	private LightURLBuilder fallback = new SimpleLightURLBuilder("/cmlink");
 
-	private ExtendedTocBasedPathTranslator pathSegmentTranslator;
+	private SiteEngineContentPathTranslator pathSegmentTranslator;
 
 	private RecursivePathTranslator pathTranslator;
 
@@ -45,15 +45,15 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 	public DefaultLightUrlBuilder(PolopolyContext context, String requestHost) {
 		this.context = context;
 
-		this.requestHost = requestHost;
-
 		if (!requestHost.startsWith("http")) {
 			requestHost = "http://" + requestHost;
 		}
 
-		if (!requestHost.endsWith("/")) {
-			requestHost += "/";
+		if (requestHost.endsWith("/")) {
+			requestHost = requestHost.substring(0, requestHost.length() - 1);
 		}
+
+		this.requestHost = requestHost;
 
 		pathSegmentTranslator = createPathSegmentTranslator();
 
@@ -165,12 +165,12 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 		}
 	}
 
-	private RecursivePathTranslator createPathTranslator(final ExtendedTocBasedPathTranslator pathSegmentTranslator) {
+	private RecursivePathTranslator createPathTranslator(final SiteEngineContentPathTranslator pathSegmentTranslator) {
 		return new RecursivePathTranslator(context.getPolicyCMServer(), new LightPathTranslatorExposer(
 				pathSegmentTranslator, context));
 	}
 
-	private ExtendedTocBasedPathTranslator createPathSegmentTranslator() {
+	private SiteEngineContentPathTranslator createPathSegmentTranslator() {
 		HashMap<String, String> configMap = new HashMap<String, String>();
 
 		ConfigReadMap config = new ConfigReadMap(configMap);
@@ -180,7 +180,7 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 		configMap.put("contentNameFallback", "false");
 		configMap.put("ignoreCaseInPathSegment", "true");
 
-		final ExtendedTocBasedPathTranslator pathSegmentTranslator = new ExtendedTocBasedPathTranslator();
+		final SiteEngineContentPathTranslator pathSegmentTranslator = new SiteEngineContentPathTranslator();
 
 		pathSegmentTranslator.setPolicyCMServer(context.getPolicyCMServer());
 		pathSegmentTranslator.init(config);

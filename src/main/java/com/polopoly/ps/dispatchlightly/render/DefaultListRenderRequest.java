@@ -1,6 +1,8 @@
 package com.polopoly.ps.dispatchlightly.render;
 
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.polopoly.ps.dispatchlightly.Model;
 import com.polopoly.ps.dispatchlightly.ModelContext;
@@ -9,6 +11,7 @@ import com.polopoly.ps.dispatchlightly.polopoly.RenderMode;
 import com.polopoly.util.Require;
 
 public class DefaultListRenderRequest implements ListRenderRequest, Iterable<RenderRequest> {
+	private static final Logger LOGGER = Logger.getLogger(DefaultListRenderRequest.class.getName());
 
 	private Iterable<Object> objectsToRender;
 	private Class<? extends Model> modelClass;
@@ -41,6 +44,14 @@ public class DefaultListRenderRequest implements ListRenderRequest, Iterable<Ren
 
 	public void setAddToChildModel(Object... addToChildModel) {
 		this.addToChildModel = addToChildModel;
+
+		for (int i = 0; i < addToChildModel.length; i++) {
+			if (addToChildModel[i] == null) {
+				LOGGER.log(Level.WARNING, "Attempt to add a null object to the child model in request " + this + ".",
+						new Exception());
+				addToChildModel[i] = new Object();
+			}
+		}
 	}
 
 	@Override

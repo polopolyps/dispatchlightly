@@ -6,15 +6,15 @@ import java.net.URLEncoder;
 
 import com.polopoly.cm.ContentId;
 import com.polopoly.cm.client.CMException;
-import com.polopoly.cm.path.ExtendedTocBasedPathTranslator;
 import com.polopoly.cm.path.impl.RecursivePathTranslator.ContentPathTranslatorExposer;
+import com.polopoly.cm.path.impl.SiteEngineContentPathTranslator;
 import com.polopoly.util.client.PolopolyContext;
 
 class LightPathTranslatorExposer implements ContentPathTranslatorExposer {
-	private final ExtendedTocBasedPathTranslator pathSegmentTranslator;
+	private final SiteEngineContentPathTranslator pathSegmentTranslator;
 	private PolopolyContext context;
 
-	LightPathTranslatorExposer(ExtendedTocBasedPathTranslator pathSegmentTranslator, PolopolyContext context) {
+	LightPathTranslatorExposer(SiteEngineContentPathTranslator pathSegmentTranslator, PolopolyContext context) {
 		this.pathSegmentTranslator = pathSegmentTranslator;
 		this.context = context;
 	}
