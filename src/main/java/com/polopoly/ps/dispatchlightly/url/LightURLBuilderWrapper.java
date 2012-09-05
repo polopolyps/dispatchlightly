@@ -1,4 +1,4 @@
-package com.polopoly.ps.dispatchlightly.model;
+package com.polopoly.ps.dispatchlightly.url;
 
 import java.util.Map;
 import java.util.logging.Level;

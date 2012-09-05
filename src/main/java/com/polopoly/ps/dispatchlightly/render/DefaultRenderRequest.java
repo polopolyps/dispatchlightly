@@ -30,9 +30,11 @@ public class DefaultRenderRequest implements RenderRequest {
 		this.context = context;
 		this.addToChildModel = addToChildModel;
 
-		for (Object o : addToChildModel) {
-			if (o == null) {
-				LOGGER.log(Level.WARNING, "Attempt to add a null object to the context.", new Exception());
+		for (int i = 0; i < addToChildModel.length; i++) {
+			if (addToChildModel[i] == null) {
+				LOGGER.log(Level.WARNING, "Attempt to add a null object to the child model in request " + this + ".",
+						new Exception());
+				addToChildModel[i] = new Object();
 			}
 		}
 	}

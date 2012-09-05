@@ -1,4 +1,4 @@
-package com.polopoly.ps.dispatchlightly.model;
+package com.polopoly.ps.dispatchlightly.url;
 
 import static java.net.URLEncoder.encode;
 
@@ -15,23 +15,34 @@ import com.polopoly.cm.ContentId;
  * purposes.
  */
 public class SimpleLightURLBuilder implements LightURLBuilder {
-	private static final Logger LOGGER = Logger
-			.getLogger(SimpleLightURLBuilder.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SimpleLightURLBuilder.class.getName());
+	private String prefix;
+
+	public SimpleLightURLBuilder() {
+		this("");
+	}
+
+	public SimpleLightURLBuilder(String prefix) {
+		this.prefix = prefix;
+	}
 
 	@Override
 	public String createUrl(ContentId[] path, Map<String, String> parametersMap) {
 		StringBuffer result = new StringBuffer(100);
-		String stringResult = appendPathAndParameter(path, parametersMap,
-				result);
+
+		result.append(prefix);
+
+		String stringResult = appendPathAndParameter(path, parametersMap, result);
+
 		return stringResult;
 	}
 
-	private String appendPathAndParameter(ContentId[] path,
-			Map<String, String> parametersMap, StringBuffer result) {
+	private String appendPathAndParameter(ContentId[] path, Map<String, String> parametersMap, StringBuffer result) {
 		for (ContentId contentId : path) {
 			result.append("/");
 			result.append(contentId.getContentId().getContentIdString());
 		}
+
 		result.append(buildParamString(parametersMap));
 		return result.toString();
 	}
@@ -43,8 +54,7 @@ public class SimpleLightURLBuilder implements LightURLBuilder {
 
 	private String buildParamString(Map<String, String> parameters) {
 		StringBuilder paramBuffer = new StringBuilder();
-		Iterator<Map.Entry<String, String>> paramIter = parameters.entrySet()
-				.iterator();
+		Iterator<Map.Entry<String, String>> paramIter = parameters.entrySet().iterator();
 		if (paramIter.hasNext()) {
 			Map.Entry<String, String> param = paramIter.next();
 			paramBuffer.append('?');
@@ -58,8 +68,7 @@ public class SimpleLightURLBuilder implements LightURLBuilder {
 		return paramBuffer.toString();
 	}
 
-	private void appendNameValue(StringBuilder paramBuffer,
-			Map.Entry<String, String> param) {
+	private void appendNameValue(StringBuilder paramBuffer, Map.Entry<String, String> param) {
 		try {
 			paramBuffer.append(encode(param.getKey(), "UTF-8"));
 			if (!param.getValue().isEmpty()) {
@@ -79,6 +88,7 @@ public class SimpleLightURLBuilder implements LightURLBuilder {
 
 	@Override
 	public String getStaticAsset(String assetUriRelativeToRoot) {
+		// this seems completely wrong...
 		return "../web/src/main/webapp/" + assetUriRelativeToRoot;
 	}
 

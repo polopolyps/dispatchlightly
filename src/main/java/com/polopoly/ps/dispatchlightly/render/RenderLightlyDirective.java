@@ -4,6 +4,8 @@ import static com.polopoly.ps.dispatchlightly.render.Renderer.CONTEXT_KEY_IN_CON
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -21,6 +23,7 @@ import com.polopoly.util.CheckedCast;
 import com.polopoly.util.CheckedClassCastException;
 
 public class RenderLightlyDirective extends Directive {
+	private static final Logger LOGGER = Logger.getLogger(RenderLightlyDirective.class.getName());
 
 	@Override
 	public String getName() {
@@ -40,6 +43,12 @@ public class RenderLightlyDirective extends Directive {
 		}
 
 		Object parameter = node.jjtGetChild(0).value(context);
+
+		if (parameter == null) {
+			LOGGER.log(Level.WARNING, "Passed null object to renderlighly. Expression was " + node.jjtGetChild(0) + ".");
+			writer.write("<!-- render lightly of null object -->");
+			return true;
+		}
 
 		RenderRequest request;
 

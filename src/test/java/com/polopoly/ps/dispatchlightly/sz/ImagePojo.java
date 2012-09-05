@@ -1,6 +1,6 @@
 package com.polopoly.ps.dispatchlightly.sz;
 
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
 
 public class ImagePojo implements Image {
 	private int originalWidth;

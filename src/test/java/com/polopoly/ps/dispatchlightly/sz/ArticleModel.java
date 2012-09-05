@@ -2,12 +2,12 @@ package com.polopoly.ps.dispatchlightly.sz;
 
 import com.polopoly.ps.dispatchlightly.Model;
 import com.polopoly.ps.dispatchlightly.ModelContext;
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
 import com.polopoly.ps.dispatchlightly.polopoly.RenderMode;
 import com.polopoly.ps.dispatchlightly.render.DefaultListRenderRequest;
 import com.polopoly.ps.dispatchlightly.render.DefaultRenderRequest;
 import com.polopoly.ps.dispatchlightly.render.ListRenderRequest;
 import com.polopoly.ps.dispatchlightly.render.RenderRequest;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
 
 public class ArticleModel implements Model {
 	private Article article;

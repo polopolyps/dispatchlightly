@@ -2,6 +2,8 @@ package com.polopoly.ps.dispatchlightly.initializer;
 
 import static com.polopoly.cm.servlet.RequestPreparator.getURLBuilder;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +15,10 @@ import com.polopoly.ps.dispatchlightly.ModelContext;
 import com.polopoly.ps.dispatchlightly.ModelContextInitializer;
 import com.polopoly.ps.dispatchlightly.exception.NoSuchModelContextObjectException;
 import com.polopoly.ps.dispatchlightly.model.ContentPathUtilWrapper;
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilderWrapper;
 import com.polopoly.ps.dispatchlightly.model.PreviewMode;
 import com.polopoly.ps.dispatchlightly.polopoly.RenderMode;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilderWrapper;
 import com.polopoly.ps.layout.element.util.ControllerUtil;
 import com.polopoly.ps.layout.element.util.NoCurrentPageException;
 import com.polopoly.ps.layout.element.util.NoPageScopeAvailableException;
@@ -47,6 +49,12 @@ public class BasicModelContextInitializer implements ModelContextInitializer {
 			putUnlessExists(context, util.getPage(Page.class), Page.class);
 		} catch (NoCurrentPageException e1) {
 			// fine.
+		}
+
+		try {
+			context.put(new URL(util.getRequest().getRequestURL().toString()));
+		} catch (MalformedURLException e2) {
+			// weird, but ignore.
 		}
 
 		try {

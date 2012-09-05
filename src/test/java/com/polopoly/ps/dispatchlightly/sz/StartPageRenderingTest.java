@@ -9,11 +9,11 @@ import org.junit.Test;
 import com.polopoly.ps.dispatchlightly.DefaultModelContext;
 import com.polopoly.ps.dispatchlightly.Model;
 import com.polopoly.ps.dispatchlightly.VelocityInitializer;
-import com.polopoly.ps.dispatchlightly.model.SimpleLightURLBuilder;
 import com.polopoly.ps.dispatchlightly.polopoly.RenderMode;
 import com.polopoly.ps.dispatchlightly.render.DefaultRenderRequest;
 import com.polopoly.ps.dispatchlightly.render.RenderRequest;
 import com.polopoly.ps.dispatchlightly.render.Renderer;
+import com.polopoly.ps.dispatchlightly.url.SimpleLightURLBuilder;
 
 public class StartPageRenderingTest {
 

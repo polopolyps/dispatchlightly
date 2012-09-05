@@ -1,0 +1,17 @@
+id:.site
+inputtemplate:p.siteengine.Site
+list:.department
+component:domainAlias:mainAlias:http\://site\:8080
+
+id:.department
+inputtemplate:p.siteengine.Page
+component:pathsegment:value:department
+list:.article
+securityparent:.site
+
+id:.article
+name:article
+inputtemplate:example.StandardArticle
+component:pathsegment:value:article
+securityparent:.department
+

@@ -2,9 +2,9 @@ package com.polopoly.ps.dispatchlightly.sz;
 
 import com.polopoly.ps.dispatchlightly.Model;
 import com.polopoly.ps.dispatchlightly.ModelContext;
-import com.polopoly.ps.dispatchlightly.model.LightURLBuilder;
 import com.polopoly.ps.dispatchlightly.render.DefaultListRenderRequest;
 import com.polopoly.ps.dispatchlightly.render.ListRenderRequest;
+import com.polopoly.ps.dispatchlightly.url.LightURLBuilder;
 
 public class ArticlePlacementModel implements Model {
 	private ModelContext context;
