@@ -116,7 +116,7 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 			if (mainAlias != null) {
 				host = mainAlias.getDomain();
 
-				if (!forceAbsoluteUrls && host.startsWith(requestHost)) {
+				if (!forceAbsoluteUrls && addPort(host).equals(addPort(requestHost))) {
 					host = "";
 				}
 
@@ -138,6 +138,14 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 			LOGGER.log(Level.WARNING, "Creating URL for " + toString(idPath) + ": " + e.getMessage(), e);
 
 			return createFallbackPath(idPath);
+		}
+	}
+
+	private String addPort(String host) {
+		if (host.contains(":")) {
+			return host;
+		} else {
+			return host + ":80";
 		}
 	}
 
@@ -179,8 +187,9 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 		configMap.put("contentListNames", "polopoly.Department,default,pages,articles,feeds,landingPages");
 		configMap.put("contentNameFallback", "false");
 		configMap.put("ignoreCaseInPathSegment", "true");
-
-		final SiteEngineContentPathTranslator pathSegmentTranslator = new SiteEngineContentPathTranslator();
+		configMap.put("pathSegmentTranslatorFactory",
+				com.polopoly.ps.dispatchlightly.url.EvenFriendlierPathSegmentTranslatorFactory.class.getName());
+		pathSegmentTranslator = new SiteEngineContentPathTranslator();
 
 		pathSegmentTranslator.setPolicyCMServer(context.getPolicyCMServer());
 		pathSegmentTranslator.init(config);

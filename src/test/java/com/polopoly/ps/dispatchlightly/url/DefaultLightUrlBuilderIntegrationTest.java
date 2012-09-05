@@ -24,7 +24,7 @@ public class DefaultLightUrlBuilderIntegrationTest extends AbstractIntegrationTe
 	}
 
 	@Test
-	public void testDifferenHostArticle() throws Exception {
+	public void testDifferentHostArticle() throws Exception {
 		ContentId[] idPath = new ContentId[] { site, department, article };
 
 		String url = getUrl(idPath, "http://www.a.com/");
