@@ -124,7 +124,18 @@ public class DefaultLightUrlBuilder implements LightURLBuilder {
 					host = host.substring(0, host.length() - 1);
 				}
 
-				return host + pathTranslator.createPath(idPath, 1, new EverythingUnsupportedHttpServletRequest());
+				String result = host
+						+ pathTranslator.createPath(idPath, 1, new EverythingUnsupportedHttpServletRequest());
+
+				if (idPath.length > 0 && idPath[idPath.length - 1].getMajor() == 1) {
+					String contentIdSuffix = "-" + idPath[idPath.length - 1].getContentId().getContentIdString();
+
+					if (!result.endsWith(contentIdSuffix)) {
+						result += contentIdSuffix;
+					}
+				}
+
+				return result;
 			} else {
 				return createFallbackPath(idPath);
 			}

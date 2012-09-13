@@ -25,8 +25,7 @@ import com.polopoly.pear.config.ConfigRead;
 public class EvenFriendlierPathSegmentTranslatorFactory implements PathSegmentTranslatorFactory {
 	@Override
 	public PathSegmentTranslator create(ConfigRead config, PolicyCMServer cmServer) {
-		// this is the only thing that is changed: use the security parent
-		// rather than insert parent.
+		// changed: use the security parent rather than insert parent.
 		ContentIdFetcherSecurityParent parentIdFetcher = new ContentIdFetcherSecurityParent();
 
 		ExtendedTocBasedPathTranslator tocBasedPathTranslator = new ExtendedTocBasedPathTranslator();
